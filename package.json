@@ -1,0 +1,24 @@
+{
+  "name": "project1-prototype",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000p\u0000r\u0000o\u0000j\u0000e\u0000c\u0000t\u00001\u0000-\u0000p\u0000r\u0000o\u0000t\u0000o\u0000t\u0000y\u0000p\u0000e\u0000\r\u0000 \u0000#\u0000 \u0000p\u0000r\u0000o\u0000j\u0000e\u0000c\u0000t\u00001\u0000-\u0000p\u0000r\u0000o\u0000t\u0000o\u0000t\u0000y\u0000p\u0000e\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vbernal01/project1-prototype.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/vbernal01/project1-prototype/issues"
+  },
+  "homepage": "https://github.com/vbernal01/project1-prototype#readme",
+  "devDependencies": {
+    "eslint": "^8.24.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0"
+  }
+}

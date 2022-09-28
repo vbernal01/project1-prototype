@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Our simple HTTP server</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+
+  <script>
+    //Handles our FETCH response. This function is async because it
+    //contains an await.
+    const handleResponse = async (response, parsedResponse) => {
+
+    };
+
+    const sendPost = async (nameForm) => {
+    
+      // let response = await fetch(nameAction, {
+      //   method: nameMethod,
+      //   headers: {
+      //     'Content-Type': 'application/x-www-form-urlencoded',
+      //     'Accept': 'application/json',
+      //   },
+      //   body: formData,
+      // });
+
+      // handleResponse(response, false);
+    };
+
+    const requestUpdate = async (userForm) => {
+
+      // const url = userForm.querySelector('#urlField').value;
+      // const method = userForm.querySelector('#methodSelect').value;
+
+      // let response = await fetch(url, {
+      //   method,
+      //   headers: {
+      //     'Accept': 'application/json'
+      //   },
+      // });
+
+      // handleResponse(response, method === 'get');
+    };
+
+    //Init function is called when window.onload runs (set below).
+    const init = () => {
+    };
+
+
+
+
+    //When the window loads, run init.
+    window.onload = init;
+  </script>
+</head>
+
+<body>
+  <section id="top">
+    <h1>Welcome the Character Personality Quiz!</h1>
+    <h3>Which character is literally you?</h3>
+  </section>
+  <section id="content">
+    <div id = "row1"><div id = "r1 c1"><p>Gustavo Fring</p></div><div id = "r1 c2"><p>Walter White</p></div><div id = "r1 c3"><p>Saul Goodman</p></div><div id = "r1 c4 "><p>Daenarys Targaryan</p></div> <div id = "r1 c5"><p>Tyrion Lannister</p></div></div>
+    <div id = "row2"><div id = "r2 c1"><p>The Mandolorian</p></div> <div id = "r2 c2"><p>Tony Soprano</p></div><div id = "r2 c3"><p>Christopher Moltisanti</p></div><div id = "r2 c4 "><p>Bowser</p></div> <div id = "r2 c5"><p>Peach</p></div></div>
+    <div id = "row3"><div id = "r3 c1"><p>Michael De Santa</p></div> <div id = "r3 c2"><p>Trevor Phillips</p></div> <div id = "r3 c3"><p>Lamar Davis</p></div> <div id = "r3 c4 "><p>Shadow</p></div> <div id = "r3 c5"><p>Invincible</p></div></div>
+    <div id = "row4"><div id = "r4 c1"><p>Patrick Bateman</p></div> <div id = "r4 c2"><p>Travis Bickle</p></div> <div id = "r4 c3"><p>Bladerunner</p></div> <div id = "r4 c4 "><p>Drsive(2011)</p></div> <div id = "r4 c5"><p>Ken</p></div></div>
+
+    <button id = "moveToQuiz">Begin!</button>
+  </section>
+</body>
+
+</html>
