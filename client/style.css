@@ -19,3 +19,15 @@ html, body {
   font-size: 2em;
   text-align: center;
 }
+
+.row{
+  display:flex;
+  flex-direction: row;
+}
+
+.row > div{
+  margin: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  opacity: 50%;
+}

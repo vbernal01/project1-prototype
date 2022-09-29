@@ -1,0 +1,181 @@
+{
+    "questions": {
+        "temper1": {
+            "questionType": "temper",
+            "text": "When I don't get what I want, I fight for it until I get it",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        },
+        "temper2": {
+            "questionType": "temper",
+            "text": "When I'm angry, I tend to...",
+            "options": {
+                "low": "Calm myself",
+                "medium": "Yell Profanities",
+                "high": "Hit something"
+            }
+        },
+        "temper3": {
+            "questionType": "temper",
+            "text": "When somebody offends me I tend to",
+            "options": {
+                "low": "Brush it off",
+                "medium": "Ask for an apology",
+                "high": "Insult them back"
+            }
+        },
+        "temper4": {
+            "questionType": "temper",
+            "text": "I like to watch action movies.",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        },
+        "temper5": {
+            "questionType": "temper",
+            "text": "When somebody cuts me off when driving, I usually...",
+            "options": {
+                "low": "Ignore it",
+                "medium": "Get mildy annoyed by them",
+                "high": "Confront them when both of you are stopped"
+            }
+        },
+        "morality1": {
+            "questionType": "morality",
+            "text": "I like being the bad guy in video games.",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        },
+        "morality2": {
+            "questionType": "morality",
+            "text": "I like animals a lot.",
+            "options": {
+                "low": "Not really",
+                "medium": "Don't mind them",
+                "high": "I can't live without a pet"
+            }
+        }, "morality3": {
+            "questionType": "morality",
+            "text": "If somebody needs help with something, I'll let someone else handle it.",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        }, "morality4": {
+            "questionType": "morality",
+            "text": "If something doesn't affect me personally, I tend not to care about it.",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        }, "morality5": {
+            "questionType": "morality",
+            "text": "Autobots or Decepticons?",
+            "options": {
+                "low": "Decepticons",
+                "medium": "I don't know what either are",
+                "high": "Autobots"
+            }
+        },
+        "intelligence1": {
+            "questionType": "intelligence",
+            "text": "I like to build things.",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        },
+        "intelligence2": {
+            "questionType": "intelligence",
+            "text": "I always strategize before doing something.",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        },
+        "intelligence3": {
+            "questionType": "intelligence",
+            "text": "I like playing puzzles.",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        },
+        "intelligence4": {
+            "questionType": "intelligence",
+            "text": "How would you siege a castle?",
+            "options": {
+                "low": "Sending your troops to climb up and fight the defenders",
+                "medium": "Breaking its walls with catapults",
+                "high": "Stop their food supply"
+            }
+        },
+        "intelligence5": {
+            "questionType": "intelligence",
+            "text": "How would you defend your castle?",
+            "options": {
+                "low": "Wait out the attackers",
+                "medium": "Ask for friendly reinforcements",
+                "high": "Send a covert team to sabotage the enemy's camp"
+            }
+        },
+        "emotional1": {
+            "questionType": "emotional",
+            "text": "I like drama television and books",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        },
+        "emotional2": {
+            "questionType": "emotional",
+            "text": " I tend to think a lot about why someone acts the way they do.",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        },
+        "emotional3": {
+            "questionType": "emotional",
+            "text": "I cry during really sad movies",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        },
+        "emotional4": {
+            "questionType": "emotional",
+            "text": "I like the misunderstood characters.",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        },
+        "emotional5": {
+            "questionType": "emotional",
+            "text": "I tend to be sad more times than happy",
+            "options": {
+                "low": "Not Often",
+                "medium": "Sometimes",
+                "high": "Often"
+            }
+        }
+    }
+}

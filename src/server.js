@@ -10,17 +10,10 @@ const jsonHandler = require('./jsonResponses.js');
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
-  GET: {
     '/': htmlHandler.getIndex,
     '/style.css': htmlHandler.getCSS,
-    '/getUsers': jsonHandler.getUsers,
-    '/updateUser': jsonHandler.updateUser,
-    notFound: jsonHandler.notFound,
-  },
-  HEAD: {
-    '/getUsers': jsonHandler.getUsersMeta,
-    notFound: jsonHandler.notFoundMeta,
-  },
+    '/quiz.html' : htmlHandler.loadQuestionsPage,
+    '/questionsJSON': jsonHandler.returnQuestions
 };
 
 const parseBody = (request, response, handler) => {
@@ -53,6 +46,11 @@ const handlePost = (request, response, parsedUrl) => {
 
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
+  const acceptedTypes = request.headers.accept.split(',');
+  const params = query.parse(parsedUrl.query);
+  if (urlStruct[parsedUrl.pathname]) {
+    urlStruct[parsedUrl.pathname](request, response, acceptedTypes, params);
+  }
 };
 
 http.createServer(onRequest).listen(port, () => {

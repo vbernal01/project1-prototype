@@ -26,7 +26,7 @@
       // handleResponse(response, false);
     };
 
-    const requestUpdate = async (userForm) => {
+    const sendResponse = async (userForm) => {
 
       // const url = userForm.querySelector('#urlField').value;
       // const method = userForm.querySelector('#methodSelect').value;
@@ -41,12 +41,23 @@
       // handleResponse(response, method === 'get');
     };
 
-    //Init function is called when window.onload runs (set below).
-    const init = () => {
+    const sendFetch = async (url, acceptedType) => {
+      const options = {
+        method: 'GET',
+        headers: { 'Accept': acceptedType },
+      }
+      let response = await fetch(url, options);
     };
 
 
+    //Init function is called when window.onload runs (set below).
+    const init = () => {
 
+      // let button = document.querySelector("#moveToQuiz");
+      // const sendStatus = () => sendFetch(button.value, "application/json");
+      // button.addEventListener('click', sendStatus);
+
+    };
 
     //When the window loads, run init.
     window.onload = init;
@@ -59,12 +70,11 @@
     <h3>Which character is literally you?</h3>
   </section>
   <section id="content">
-    <div id = "row1"><div id = "r1 c1"><p>Gustavo Fring</p></div><div id = "r1 c2"><p>Walter White</p></div><div id = "r1 c3"><p>Saul Goodman</p></div><div id = "r1 c4 "><p>Daenarys Targaryan</p></div> <div id = "r1 c5"><p>Tyrion Lannister</p></div></div>
-    <div id = "row2"><div id = "r2 c1"><p>The Mandolorian</p></div> <div id = "r2 c2"><p>Tony Soprano</p></div><div id = "r2 c3"><p>Christopher Moltisanti</p></div><div id = "r2 c4 "><p>Bowser</p></div> <div id = "r2 c5"><p>Peach</p></div></div>
-    <div id = "row3"><div id = "r3 c1"><p>Michael De Santa</p></div> <div id = "r3 c2"><p>Trevor Phillips</p></div> <div id = "r3 c3"><p>Lamar Davis</p></div> <div id = "r3 c4 "><p>Shadow</p></div> <div id = "r3 c5"><p>Invincible</p></div></div>
-    <div id = "row4"><div id = "r4 c1"><p>Patrick Bateman</p></div> <div id = "r4 c2"><p>Travis Bickle</p></div> <div id = "r4 c3"><p>Bladerunner</p></div> <div id = "r4 c4 "><p>Drsive(2011)</p></div> <div id = "r4 c5"><p>Ken</p></div></div>
-
-    <button id = "moveToQuiz">Begin!</button>
+    <div id = "row1" class = "row"><div id = "r1 c1" ><p>Gustavo Fring</p></div><div id = "r1 c2"><p>Walter White</p></div><div id = "r1 c3"><p>Saul Goodman</p></div><div id = "r1 c4 "><p>Daenarys Targaryan</p></div> <div id = "r1 c5"><p>Tyrion Lannister</p></div></div>
+    <div id = "row2" class = "row"><div id = "r2 c1"><p>The Mandalorian</p></div> <div id = "r2 c2"><p>Tony Soprano</p></div><div id = "r2 c3"><p>Christopher Moltisanti</p></div><div id = "r2 c4 "><p>Bowser</p></div> <div id = "r2 c5"><p>Peach</p></div></div>
+    <div id = "row3" class = "row"><div id = "r3 c1"><p>Michael De Santa</p></div> <div id = "r3 c2"><p>Trevor Phillips</p></div> <div id = "r3 c3"><p>Lamar Davis</p></div> <div id = "r3 c4 "><p>Shadow</p></div> <div id = "r3 c5"><p>Invincible</p></div></div>
+    <div id = "row4" class = "row"><div id = "r4 c1"><p>Patrick Bateman</p></div> <div id = "r4 c2"><p>Travis Bickle</p></div> <div id = "r4 c3"><p>Bladerunner</p></div> <div id = "r4 c4 "><p>Drive(2011)</p></div> <div id = "r4 c5"><p>Ken</p></div></div>
+    <button id = "moveToQuiz"><a href = "quiz.html">Begin!</a></button>
   </section>
 </body>
 
