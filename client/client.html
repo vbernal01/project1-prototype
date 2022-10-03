@@ -6,59 +6,89 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
 
   <script>
+
     //Handles our FETCH response. This function is async because it
     //contains an await.
-    const handleResponse = async (response, parsedResponse) => {
+    const handleResponse = async (response) => {
+      let characters = await response.json();
+      let content = document.querySelector("#content");
 
-    };
+      
+      //This functionality generates the different rows and columns that will display all the different characters.
+      //I have to check up on the bulma functionality since it doesn't work to the way i want it to
+      let rowCount = 1;
+      let colCount = 1;
+      for (const key in characters) {
+        const characterStats = characters[key];
 
-    const sendPost = async (nameForm) => {
-    
-      // let response = await fetch(nameAction, {
-      //   method: nameMethod,
-      //   headers: {
-      //     'Content-Type': 'application/x-www-form-urlencoded',
-      //     'Accept': 'application/json',
-      //   },
-      //   body: formData,
-      // });
+        if (!document.querySelector(`#row${rowCount}`)) {
+          content.innerHTML += `
+          <div id = "row${rowCount}" class = "row tile"></div>          
+          `
+        }
 
-      // handleResponse(response, false);
-    };
+        let currentRow = document.querySelector(`#row${rowCount}`);
+        let nameWithoutSpaces = characterStats.name.split(" ").join("");
 
-    const sendResponse = async (userForm) => {
+        let characterDOM = document.createElement("div");
+        characterDOM.setAttribute("class", "tile character");
+        characterDOM.setAttribute("id", nameWithoutSpaces);
+        characterDOM.innerHTML += `
+        <p>${characterStats.name}</p>
+        `;
+        let expandStatButton = document.createElement("button");
 
-      // const url = userForm.querySelector('#urlField').value;
-      // const method = userForm.querySelector('#methodSelect').value;
+        //There will also be an expand stats button that will show the user all the stats of the character selected
+        expandStatButton.textContent = "Click to see stats";
+        expandStatButton.onclick = () => {
+          characterDOM.innerHTML += `
+            <div class = "stats">
+            <p class = "statText">Temper: ${characterStats.temper}</p>
+            <p class = "statText">Morality: ${characterStats.morality}</p>
+            <p class = "statText">Intelligence: ${characterStats.intelligence}</p>
+            <p class = "statText">Emotional: ${characterStats.emotional}</p>
+            </div>
+            `;
+        };
 
-      // let response = await fetch(url, {
-      //   method,
-      //   headers: {
-      //     'Accept': 'application/json'
-      //   },
-      // });
+        characterDOM.appendChild(expandStatButton);
+        currentRow.appendChild(characterDOM);
 
-      // handleResponse(response, method === 'get');
-    };
+        colCount++;
+        if (colCount > 5) {
+          colCount = 0;
+          rowCount++;
+        }
+      };
 
+
+      //This is the local storage functionallity. Needs to be polished.
+      if (localStorage.getItem("personalityMatches")) {
+        let personalityString = localStorage.getItem("personalityMatches");
+        let personalityArray = JSON.parse(personalityString);
+        for (let character of personalityArray) {
+          let convertedId = character.split(" ").join("");
+          if (document.querySelector(`#${convertedId}`)) {
+            let characterDOM = document.querySelector(`#${convertedId}`);
+            characterDOM.style.opacity = "100%";
+            characterDOM.style.color = "green";
+          }
+        }
+      }
+    }
     const sendFetch = async (url, acceptedType) => {
       const options = {
         method: 'GET',
         headers: { 'Accept': acceptedType },
       }
       let response = await fetch(url, options);
+
+      handleResponse(response);
     };
 
 
     //Init function is called when window.onload runs (set below).
-    const init = () => {
-
-      // let button = document.querySelector("#moveToQuiz");
-      // const sendStatus = () => sendFetch(button.value, "application/json");
-      // button.addEventListener('click', sendStatus);
-
-    };
-
+    const init = () => { sendFetch("/getCharacters", "application/json"); };
     //When the window loads, run init.
     window.onload = init;
   </script>
@@ -69,12 +99,12 @@
     <h1>Welcome the Character Personality Quiz!</h1>
     <h3>Which character is literally you?</h3>
   </section>
-  <section id="content">
-    <div id = "row1" class = "row"><div id = "r1 c1" ><p>Gustavo Fring</p></div><div id = "r1 c2"><p>Walter White</p></div><div id = "r1 c3"><p>Saul Goodman</p></div><div id = "r1 c4 "><p>Daenarys Targaryan</p></div> <div id = "r1 c5"><p>Tyrion Lannister</p></div></div>
-    <div id = "row2" class = "row"><div id = "r2 c1"><p>The Mandalorian</p></div> <div id = "r2 c2"><p>Tony Soprano</p></div><div id = "r2 c3"><p>Christopher Moltisanti</p></div><div id = "r2 c4 "><p>Bowser</p></div> <div id = "r2 c5"><p>Peach</p></div></div>
-    <div id = "row3" class = "row"><div id = "r3 c1"><p>Michael De Santa</p></div> <div id = "r3 c2"><p>Trevor Phillips</p></div> <div id = "r3 c3"><p>Lamar Davis</p></div> <div id = "r3 c4 "><p>Shadow</p></div> <div id = "r3 c5"><p>Invincible</p></div></div>
-    <div id = "row4" class = "row"><div id = "r4 c1"><p>Patrick Bateman</p></div> <div id = "r4 c2"><p>Travis Bickle</p></div> <div id = "r4 c3"><p>Bladerunner</p></div> <div id = "r4 c4 "><p>Drive(2011)</p></div> <div id = "r4 c5"><p>Ken</p></div></div>
-    <button id = "moveToQuiz"><a href = "quiz.html">Begin!</a></button>
+  <section id="content" class="row tile">
+    <button id="moveToQuiz"><a href="quiz.html">Start the quiz!</a></button>
+    <div id="row1" class="row tile"></div>
+    <div id="row2" class="row tile"></div>
+    <div id="row3" class="row tile"></div>
+    <div id="row4" class="row tile"></div>
   </section>
 </body>
 

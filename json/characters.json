@@ -1,0 +1,145 @@
+{
+    "characters": {
+        "GustavoFring": {
+            "Name": "Gustavo Fring",
+            "temper": "low",
+            "morality": "low",
+            "intelligence": "high",
+            "emotional": "low"
+        },
+        "WalterWhite": {
+            "Name": "Walter White",
+            "temper": "medium",
+            "morality": "medium",
+            "intelligence": "high",
+            "emotional": "high"
+        },
+        "Homelander": {
+            "Name": "Homelander",
+            "temper": "high",
+            "morality": "low",
+            "intelligence": "low",
+            "emotional": "medium"
+        },
+        "DaenerysTargaryen": {
+            "Name": "Daenerys Targaryen",
+            "temper": "high",
+            "morality": "medium",
+            "intelligence": "medium",
+            "emotional": "high"
+        },
+        "Mandolorian": {
+            "Name": "The Mandolorian",
+            "temper": "low",
+            "morality": "high",
+            "intelligence": "medium",
+            "emotional": "medium"
+        },
+        "TyrionLannister": {
+            "Name": "Tyrion Lannister",
+            "temper": "medium",
+            "morality": "medium",
+            "intelligence": "high",
+            "emotional": "medium"
+        },
+        "TonySoprano": {
+            "Name": "Tony Soprano",
+            "temper": "high",
+            "morality": "medium",
+            "intelligence": "medium",
+            "emotional": "medium"
+        },
+        "Bowser": {
+            "Name": "Bowser",
+            "temper": "high",
+            "morality": "low",
+            "intelligence": "medium",
+            "emotional": "low"
+        },
+        "MichaelDeSanta": {
+            "Name": "Michael De Santa",
+            "temper": "low",
+            "morality": "medium",
+            "intelligence": "medium",
+            "emotional": "medium"
+        },
+        "TrevorPhillips": {
+            "Name": "Trevor Phillips",
+            "temper": "high",
+            "morality": "low",
+            "intelligence": "high",
+            "emotional": "high"
+        },
+        "PatrickBateman": {
+            "Name": "Patrick Bateman",
+            "temper": "high",
+            "morality": "low",
+            "intelligence": "medium",
+            "emotional": "high"
+        },
+        "SaulGoodman": {
+            "Name": "Saul Goodman",
+            "temper": "medium",
+            "morality": "medium",
+            "intelligence": "medium",
+            "emotional": "medium"
+        },
+        "JohnMarston": {
+            "Name": "John Marston",
+            "temper": "medium",
+            "morality": "high",
+            "intelligence": "medium",
+            "emotional": "medium"
+        },
+        "Invincible": {
+            "Name": "Invincible",
+            "temper": "low",
+            "morality": "high",
+            "intelligence": "medium",
+            "emotional": "high"
+        },
+        "Peach": {
+            "Name": "Peach",
+            "temper": "low",
+            "morality": "high",
+            "intelligence": "high",
+            "emotional": "medium"
+        },
+        "LamarDavis": {
+            "Name": "Lamar Davis",
+            "temper": "medium",
+            "morality": "high",
+            "intelligence": "medium",
+            "emotional": "medium"
+        },
+        "Shadow": {
+            "Name": "Shadow",
+            "temper": "high",
+            "morality": "medium",
+            "intelligence": "medium",
+            "emotional": "high"
+        },
+        "TravisBickle": {
+            "Name": "Travis Bickle",
+            "temper": "medium",
+            "morality": "low",
+            "intelligence": "low",
+            "emotional": "high"
+        },
+        "Drive(2011)": {
+            "Name": "Drive(2011)",
+            "temper": "low",
+            "morality": "medium",
+            "intelligence": "high",
+            "emotional": "high"
+        },
+        "Bladerunner": {
+            "Name": "Bladerunner",
+            "temper": "low",
+            "morality": "medium",
+            "intelligence": "high",
+            "emotional": "medium"
+        }
+    }
+
+}

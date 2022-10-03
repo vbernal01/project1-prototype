@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+
+    <script>
+
+        //This is the local storage funcitonality used to show if a user matched with a character or not.
+        let personalityMatches = [];
+        if (localStorage.getItem("personalityMatches")) {
+            let personalityString = localStorage.getItem("personalityMatches");
+            personalityMatches = JSON.parse(personalityString);
+        }
+
+        //Handle response is called every time a fetch request is completed. It takes in the response and header and
+        //starts the approprirate cases
+        const handleResponse = async (response, header) => {
+
+            let resultsJSON = await response.json();
+            let status = response.status;
+            let content = document.querySelector("#main");
+            switch (status) {
+
+                //if the status code is 200, we display on the client-side the matching result and the stats behind it.
+                //With all the cases, the user has the option to play again and try to get more characters
+                case 200:
+                    content.innerHTML += `
+                <h1>Your results are...</h1>
+                <h2>${resultsJSON.name}</h2>
+                <br>
+                <p>Your selected traits were:</p>
+                <h3>Temper: ${resultsJSON.temper}</h3>
+                <h3>Morality: ${resultsJSON.morality}</h3>
+                <h3>Intelligence: ${resultsJSON.intelligence}</h3>
+                <h3>Emotional: ${resultsJSON.emotional}</h3>
+                <br>
+
+                <button><a href = "quiz.html">Try Again?</a></button>
+                <button><a href = "/">Back to Home</a></button>
+                `
+                //If there aren't any duplicates found, we push the new character to local storage
+                    if(personalityMatches.indexOf(resultsJSON.name) === -1){
+                    personalityMatches.push(resultsJSON.name);
+                    }
+                    localStorage.setItem("personalityMatches", JSON.stringify(personalityMatches));
+                    break;
+
+                
+                
+                //This case will happen when there isn't a matching character found. If one isn't found, give the option
+                //to the user to make their own character that other people can match with.
+                case 400:
+                    content.innerHTML += `
+                <h1>You results are...</h1>
+                <h2>You're personality is unique!</h2>
+                <br>
+                <p>Our database wasn't able to match you with a character, but you can enter youself 
+                so people can match with your unique traits!</p>
+                <p>Your selected traits were:</p>
+                <h3>Temper: ${resultsJSON.temper}</h3>
+                <h3>Morality: ${resultsJSON.morality}</h3>
+                <h3>Intelligence: ${resultsJSON.intelligence}</h3>
+                <h3>Emotional: ${resultsJSON.emotional}</h3>
+                <br>
+
+                <form id = "nameInput">
+                    <label for="fname">Enter your name here:</label>
+                    <input type="text" id="fname" name="fname"><br><br>
+                    <input type="submit" id= "postToServer" value="Post">
+                </form>
+                <button><a href = "quiz.html">Try Again?</a></button>
+                <button id = "backToHome"><a href = "/">Back To Home</a></button>
+                `
+
+                //This method is called when the user wants to submit a new character to the list. If they have a name
+                //chosen, the method sends a fetch request with the post header and sends in the different traits as parameters
+                    const postToServer = () => {
+                        let name = document.querySelector("#fname");
+                        if (!name.value) {
+                            document.querySelector("#nameInput label").textContent = "Please enter a name to continue"
+                            document.querySelector("#nameInput label").style.color = "red";
+
+                        }
+                        else {
+                            const newData = `name=${name.value}&temper=${resultsJSON.temper}&morality=${resultsJSON.morality}&intelligence=${resultsJSON.intelligence}&emotional=${resultsJSON.emotional}`;
+                            personalityMatches.push(name.value);
+                            localStorage.setItem("personalityMatches", JSON.stringify(personalityMatches));
+                            sendFetch("/addCharacter", "application/json", "post", newData);
+                        }
+                    }
+                    document.querySelector("#postToServer").addEventListener('click', postToServer);
+                    break;
+
+                case 201:
+                    console.log(resultsJSON.message);
+                    break;
+            }
+        }
+
+        const sendFetch = async (url, acceptedType, header, body) => {
+
+            let options;
+            if (body) {
+                options = {
+                    method: header,
+                    headers: { 'Accept': acceptedType },
+                    body
+                }
+            }
+            else {
+                options = {
+                    method: header,
+                    headers: { 'Accept': acceptedType },
+                }
+            }
+            let response = await fetch(url, options);
+            handleResponse(response, header);
+        };
+        //Init function is called when window.onload runs (set below).
+        const init = () => {
+            //Since there are no buttons in results, everytime the page loads, it will call a fetch to load the results found.
+            //Future plans will be to change this idea since there are issues with calling a fetch on init.
+            sendFetch("/returnResults", "application/json", "get");
+        };
+
+        //When the window loads, run init.
+        window.onload = init;
+    </script>
+</head>
+
+<body>
+    <section id="main">
+
+    </section>
+</body>
+
+</html>

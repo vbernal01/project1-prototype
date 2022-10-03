@@ -9,13 +9,29 @@ const jsonHandler = require('./jsonResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+// These are the different calls the server will take
 const urlStruct = {
-    '/': htmlHandler.getIndex,
-    '/style.css': htmlHandler.getCSS,
-    '/quiz.html' : htmlHandler.loadQuestionsPage,
-    '/questionsJSON': jsonHandler.returnQuestions
+  '/': htmlHandler.getIndex,
+  '/style.css': htmlHandler.getCSS,
+  '/getCharacters': jsonHandler.getCharacters,
+  '/addCharacter': jsonHandler.addNewCharacter,
+  '/quiz.html': htmlHandler.loadQuestionsPage,
+  '/results.html': htmlHandler.loadResultsPage,
+  '/questionsJSON': jsonHandler.returnQuestions,
+  '/returnResults': jsonHandler.returnUserCharacter,
 };
 
+// handle post decides which post method to call, even though both have to go through parsebody first.
+const handlePost = (request, response, parsedUrl) => {
+  if (parsedUrl.pathname === '/sendUserCharacter') {
+    parseBody(request, response, jsonHandler.matchCharacter);
+  } else if (parsedUrl.pathname === '/addCharacter') {
+    parseBody(request, response, jsonHandler.addNewCharacter);
+  }
+};
+
+// This was used in http-assignment-ii, it will parse the body and then make it readable in the approptiate
+// json handler
 const parseBody = (request, response, handler) => {
   // The request will come in in pieces. We will store those pieces in this
   // body array.
@@ -37,18 +53,14 @@ const parseBody = (request, response, handler) => {
     handler(request, response, bodyParams);
   });
 };
-// handle POST requests
-const handlePost = (request, response, parsedUrl) => {
-  if (parsedUrl.pathname === '/addUser') {
-    parseBody(request, response, jsonHandler.addUser);
-  }
-};
 
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
   const acceptedTypes = request.headers.accept.split(',');
   const params = query.parse(parsedUrl.query);
-  if (urlStruct[parsedUrl.pathname]) {
+  if (request.method === 'POST') {
+    handlePost(request, response, parsedUrl);
+  } else if (urlStruct[parsedUrl.pathname]) {
     urlStruct[parsedUrl.pathname](request, response, acceptedTypes, params);
   }
 };
