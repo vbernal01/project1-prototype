@@ -20,7 +20,6 @@
             },
             body: paramUserData,
         });
-        handleResponse(response, "POST");
     };
 
 
@@ -94,67 +93,61 @@
             userAnswerData.push(tallyAnswers("morality"));
             userAnswerData.push(tallyAnswers("intelligence"));
             userAnswerData.push(tallyAnswers("emotional"));
-            
-            for(let check of userAnswerData){
-                if(check === "error"){
+
+            for (let check of userAnswerData) {
+                if (check === "error") {
                     userAnswerData = "error";
                     break;
                 }
             }
-            if(userAnswerData === "error"){
-                radioForm.innerHTML =   `
+
+            if (userAnswerData === "error") {
+                radioForm.innerHTML = `
                     <h1>Error in your submission, please answer all the questions and try again.</h1>
                     <button><a href = "quiz.html">Try Again?</a></button>
                     <button><a href = "/">Back to Home</a></button>;`
-                
+
             }
             //If there aren't any errors, we post the results
-            else{
+            else {
                 sendPost(userAnswerData);
             }
 
         }
-        let submitButton = document.createElement("input");
-        submitButton.setAttribute("type", "submit");
-        submitButton.setAttribute("value", "submit");
-        submitButton.textContent = "Submit your answers";
-        submitButton.addEventListener('click', submit);
-        radioForm.appendChild(submitButton);
+
+
+        radioForm.innerHTML += `
+        <button id = "submit"><a href = "results.html">Sum</a></button>
+        `;
+
+        document.querySelector("#submit").addEventListener('click', submit);
     }
 
 
-
-    const handleResponse = async (response, method) => {
-        switch (method) {
-            case "PUT":
-                loadPage(response);
-                break;
-            case "POST":
-                await response;
-
-                //This code will automatically jump the site to results.html. That will then trigger the fetch
-                //request in result's init functiom
-                window.location.replace("results.html");
-                break;
-
-        }
-    };
-
-    const sendFetch = async (url, acceptedType) => {
+    const sendQuestionFetch = async (url, acceptedType) => {
         const options = {
             method: 'PUT',
             headers: { 'Accept': acceptedType },
         }
         let response = await fetch(url, options);
 
-        handleResponse(response, "PUT");
+        if (response.status === 404) {
+            document.body.innerHTML =
+                `<p>${resultsJSON.message}</p>
+                  <button><a href = "/">Go back to Homepage</a></button>
+                `;
+        }
+        else {
+            loadPage(response)
+        }
+
     };
 
 
     //Init function is called when window.onload runs (set below).
     const init = () => {
         //first thing we do is get the json by calling it from the server
-        sendFetch("/questionsJSON", "application/json");
+        sendQuestionFetch("/questionsJSON", "application/json");
     };
 
     //When the window loads, run init.

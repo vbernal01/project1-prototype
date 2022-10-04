@@ -58,19 +58,34 @@ const getCharacters = (request, response) => {
 // If that key doesn't exist yet, we send out a 400 error and an object containing the
 // user's results.
 const returnUserCharacter = (request, response) => {
-  if (!characters[userCharacterKey]) {
-    respondJSON(request, response, '400', userTraits);
+
+  if (!userCharacterKey || !characters || !userTraits) {
+    const errorResponse = {
+      message: "ERROR, you cannot access results.html without filling out the quiz.",
+    };
+    respondJSON(request, response, '404', errorResponse);
+  }
+  else if (!characters[userCharacterKey]) {
+    respondJSON(request, response, '206', userTraits);
   } else {
     respondJSON(request, response, '200', characters[userCharacterKey]);
   }
+};
+
+// This method is called when the user tries to go to a page that isn't found.
+const notFound = (request, response) => {
+  const responseJSON = {
+    message: 'The page you are looking for was not found.',
+    id: 'notFound',
+  };
+
+  respondJSON(request, response, 404, responseJSON);
 };
 
 // This method is similar to returnUserCharacter, where we check to see if there are any matches in
 // character[] with the user's results. In here, however, we actually create the user's key from
 // the parsedBody
 const matchCharacter = (request, response, body) => {
-  console.log(body.results);
-
   // if the key is not found, we put the traits into an object to be sent back to results.html
   if (!characters[body.results]) {
     const traits = body.results.split(',');
@@ -87,10 +102,9 @@ const matchCharacter = (request, response, body) => {
     };
     respondJSON(request, response, '200', responseJSON);
   }
-
   // if they are found, we make the user's character equal to the one found in charcter[], and its
   // key as well.
-  if (characters[body.results]) {
+  else if (characters[body.results]) {
     userCharacterKey = body.results;
     userTraits = characters[body.results];
     const responseJSON = {
@@ -100,22 +114,43 @@ const matchCharacter = (request, response, body) => {
   }
 };
 
-// This is the post method that will add a new character to the character list. We create a 
-//new object with all the user's parameters, and send it back with a 201 status code.
+
+const checkForDuplicates = (name) => {
+  for (const character in characters) {
+    if (characters[character].name === name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// This is the post method that will add a new character to the character list. We create a
+// new object with all the user's parameters, and send it back with a 201 status code.
 const addNewCharacter = (request, response, body) => {
   userCharacterKey = `${body.temper},${body.morality},${body.intelligence},${body.emotional}`;
-  characters[userCharacterKey] = {
-    name: body.name,
-    temper: body.temper,
-    morality: body.morality,
-    intelligence: body.intelligence,
-    emotional: body.emotional,
-  };
-  const responseJSON = {
-    message: 'Successfully Posted!',
-  };
-  respondJSON(request, response, '201', responseJSON);
+  const responseJSON = {};
+  let status = 201;
+
+  const duplicates = checkForDuplicates(body.name);
+  if (!duplicates) {
+    characters[userCharacterKey] = {
+      name: body.name,
+      temper: body.temper,
+      morality: body.morality,
+      intelligence: body.intelligence,
+      emotional: body.emotional,
+    };
+    responseJSON.message = "Successfully Posted!";
+  }
+  else {
+    responseJSON.message = "Name already in database, please enter a different name.";
+    status = 400;
+
+  }
+  respondJSON(request, response, status, responseJSON);
 };
+
+
 // public exports
 module.exports = {
   getCharacters,
@@ -123,4 +158,5 @@ module.exports = {
   returnUserCharacter,
   matchCharacter,
   addNewCharacter,
+  notFound,
 };

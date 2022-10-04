@@ -13,7 +13,13 @@
       let characters = await response.json();
       let content = document.querySelector("#content");
 
-      
+      if (response.status === 404) {
+        document.querySelector("#main").innerHTML =
+          `<p>${resultsJSON.message}</p>
+            <button><a href = "/">Go back to Homepage</a></button>
+          `;
+          return;
+      }
       //This functionality generates the different rows and columns that will display all the different characters.
       //I have to check up on the bulma functionality since it doesn't work to the way i want it to
       let rowCount = 1;

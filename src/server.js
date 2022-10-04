@@ -60,8 +60,12 @@ const onRequest = (request, response) => {
   const params = query.parse(parsedUrl.query);
   if (request.method === 'POST') {
     handlePost(request, response, parsedUrl);
-  } else if (urlStruct[parsedUrl.pathname]) {
+  } 
+  else if (urlStruct[parsedUrl.pathname]) {
     urlStruct[parsedUrl.pathname](request, response, acceptedTypes, params);
+  }
+  else{
+    jsonHandler.notFound(request,response);
   }
 };
 

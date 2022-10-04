@@ -11,6 +11,7 @@
 
         //This is the local storage funcitonality used to show if a user matched with a character or not.
         let personalityMatches = [];
+        let currentChar;
         if (localStorage.getItem("personalityMatches")) {
             let personalityString = localStorage.getItem("personalityMatches");
             personalityMatches = JSON.parse(personalityString);
@@ -42,18 +43,19 @@
                 <button><a href = "quiz.html">Try Again?</a></button>
                 <button><a href = "/">Back to Home</a></button>
                 `
-                //If there aren't any duplicates found, we push the new character to local storage
-                    if(personalityMatches.indexOf(resultsJSON.name) === -1){
-                    personalityMatches.push(resultsJSON.name);
+                    currentChar = resultsJSON.name;
+                    //If there aren't any duplicates found, we push the new character to local storage
+                    if (personalityMatches.indexOf(resultsJSON.name) === -1) {
+                        personalityMatches.push(resultsJSON.name);
                     }
                     localStorage.setItem("personalityMatches", JSON.stringify(personalityMatches));
                     break;
 
-                
-                
+
+
                 //This case will happen when there isn't a matching character found. If one isn't found, give the option
                 //to the user to make their own character that other people can match with.
-                case 400:
+                case 206:
                     content.innerHTML += `
                 <h1>You results are...</h1>
                 <h2>You're personality is unique!</h2>
@@ -70,14 +72,17 @@
                 <form id = "nameInput">
                     <label for="fname">Enter your name here:</label>
                     <input type="text" id="fname" name="fname"><br><br>
-                    <input type="submit" id= "postToServer" value="Post">
+                    <p id = "post-message"></p>
                 </form>
-                <button><a href = "quiz.html">Try Again?</a></button>
-                <button id = "backToHome"><a href = "/">Back To Home</a></button>
+                <div id = "buttons">
+                    <button id = "backToQuiz"><a href = "quiz.html">Try Again?</a></button>
+                    <button id = "backToHome"><a href = "/">Back To Home</a></button>
+                </div>
+                
                 `
 
-                //This method is called when the user wants to submit a new character to the list. If they have a name
-                //chosen, the method sends a fetch request with the post header and sends in the different traits as parameters
+                    //This method is called when the user wants to submit a new character to the list. If they have a name
+                    //chosen, the method sends a fetch request with the post header and sends in the different traits as parameters
                     const postToServer = () => {
                         let name = document.querySelector("#fname");
                         if (!name.value) {
@@ -87,44 +92,66 @@
                         }
                         else {
                             const newData = `name=${name.value}&temper=${resultsJSON.temper}&morality=${resultsJSON.morality}&intelligence=${resultsJSON.intelligence}&emotional=${resultsJSON.emotional}`;
-                            personalityMatches.push(name.value);
-                            localStorage.setItem("personalityMatches", JSON.stringify(personalityMatches));
-                            sendFetch("/addCharacter", "application/json", "post", newData);
+                            currentChar = name.value;
+                            sendFetch("/addCharacter", "post", newData);
                         }
                     }
-                    document.querySelector("#postToServer").addEventListener('click', postToServer);
+
+                    let postButton = document.createElement("button");
+                    postButton.setAttribute("id", "postButton");
+                    postButton.textContent = "Post new Character";
+                    document.querySelector("#buttons").insertBefore(postButton, document.querySelector("#backToQuiz"));
+                    postButton.addEventListener('click', postToServer);
                     break;
 
                 case 201:
                     console.log(resultsJSON.message);
+                    document.querySelector("#post-message").textContent = `Successfully Posted!`
+                    document.querySelector("#postButton").disabled = true;
+                    if (personalityMatches.indexOf(currentChar) === -1) {
+                        personalityMatches.push(currentChar);
+                    }
+                    localStorage.setItem("personalityMatches", JSON.stringify(personalityMatches));
+                    break;
+                case 400:
+                    console.log(resultsJSON.message);
+                    document.querySelector("#post-message").textContent = `ERROR: ${resultsJSON.message}`;
+                    break;
+                case 404:
+                    document.querySelector("#main").innerHTML = 
+                    `<p>${resultsJSON.message}</p>
+                     <button><a href = "/">Go back to Homepage</a></button>
+                    `;
                     break;
             }
+
+
         }
 
-        const sendFetch = async (url, acceptedType, header, body) => {
-
+        const sendFetch = async (url, header, body) => {
             let options;
             if (body) {
                 options = {
                     method: header,
-                    headers: { 'Accept': acceptedType },
+                    headers: { 'Accept': "application/json" },
                     body
                 }
             }
             else {
                 options = {
                     method: header,
-                    headers: { 'Accept': acceptedType },
+                    headers: { 'Accept': "application/json" },
                 }
             }
             let response = await fetch(url, options);
             handleResponse(response, header);
         };
+
         //Init function is called when window.onload runs (set below).
         const init = () => {
             //Since there are no buttons in results, everytime the page loads, it will call a fetch to load the results found.
             //Future plans will be to change this idea since there are issues with calling a fetch on init.
-            sendFetch("/returnResults", "application/json", "get");
+            sendFetch("/returnResults", "get");
         };
 
         //When the window loads, run init.
