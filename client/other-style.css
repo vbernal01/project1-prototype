@@ -1,0 +1,27 @@
+
+@import "/bulma.css";
+
+.question{
+    border-bottom: 1px solid grey;
+    margin-left: 20px;
+}
+
+#submit{
+    background-color:darkslateblue;
+    color: white;
+    height:50px;
+    width:100px;
+}
+#submit:hover{
+    opacity: 80%;
+}
+
+#submit a:visited, a:link{
+    color:white;
+    
+}
+
+#main{
+    margin-left: 25px;
+}
+

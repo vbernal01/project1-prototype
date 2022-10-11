@@ -1,3 +1,5 @@
+@import "/bulma.css";
+
 html, body {
   height: 100%;
   width: 100%;
@@ -14,16 +16,40 @@ html, body {
   font-size: 2em;
 }
 
-#content {
-  margin-top: 100px;
-  font-size: 2em;
+#contentWrapper {
+  margin-top: 50px;
   text-align: center;
 }
+.row{
+  width: 40vw;
+  margin-left: 5vw;
+}
 
-.row > div{
-  margin: 10px;
-  margin-left: 50px;
-  margin-right: 50px;
-  opacity: 50%;
-  border: 1px solid black;
+.col{
+  height: 18vh;
+}
+.col:hover{
+  opacity:100%;
+}
+
+.col img{
+  height: 80%;
+  width: 100%;
+}
+
+#showCharacter{
+border: 1px solid black;
+}
+
+#stats{
+  text-align: center;
+}
+#stats img{
+  width: 50%;
+  height:100%;
+}
+
+#statWrapper{
+  margin-left: 20px;
+  font-size: 1.25em;
 }

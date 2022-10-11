@@ -1,4 +1,4 @@
-const characters = {};
+const serverCharacters = {};
 let userTraits;
 let userCharacterKey;
 const fs = require('fs');
@@ -10,6 +10,16 @@ const charactersJSON = fs.readFileSync(`${__dirname}/../json/characters.json`);
 const respondJSON = (request, response, status, object) => {
   response.writeHead(status, { 'Content-Type': 'application/json' });
   response.write(JSON.stringify(object));
+  response.end();
+};
+
+// This function is called when the server matches the user character with one found
+// Since we don't really need to send any data back, just the status code
+const respondJSONMeta = (request, response, status) => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  response.writeHead(status, headers);
   response.end();
 };
 
@@ -30,23 +40,29 @@ const returnQuestions = (request, response) => {
 // the character with the user results.
 const loadCharacters = () => {
   const realCharJSON = JSON.parse(charactersJSON);
-  for (const x in realCharJSON.characters) {
-    const value = realCharJSON.characters[x];
-    characters[`${value.temper},${value.morality},${value.intelligence},${value.emotional}`] = {
-      name: value.Name,
-      temper: value.temper,
-      morality: value.morality,
-      intelligence: value.intelligence,
-      emotional: value.emotional,
-    };
-  }
+  const charJSONValues = Object.values(realCharJSON.characters);
+
+  charJSONValues.forEach((charcter) => {
+    const key = `${charcter.temper},${charcter.morality},${charcter.intelligence},${charcter.emotional}`;
+    if (!serverCharacters[key]) {
+      serverCharacters[key] = {
+        name: charcter.Name,
+        temper: charcter.temper,
+        morality: charcter.morality,
+        intelligence: charcter.intelligence,
+        emotional: charcter.emotional,
+      };
+    } else {
+      console.log(charcter.Name);
+    }
+  });
 };
 loadCharacters();
 
 // This method is used in the first page, client.html, to help display all the different
 // characters. It will also take into account new characters that users submitted.
 const getCharacters = (request, response) => {
-  respondJSON(request, response, '200', characters);
+  respondJSON(request, response, '200', serverCharacters);
 };
 
 // This method is called every time results.html is loaded. It  first sees if the users
@@ -58,17 +74,15 @@ const getCharacters = (request, response) => {
 // If that key doesn't exist yet, we send out a 400 error and an object containing the
 // user's results.
 const returnUserCharacter = (request, response) => {
-
-  if (!userCharacterKey || !characters || !userTraits) {
+  if (!userCharacterKey || !serverCharacters || !userTraits) {
     const errorResponse = {
-      message: "ERROR, you cannot access results.html without filling out the quiz.",
+      message: 'ERROR, you cannot access results.html without filling out the quiz.',
     };
     respondJSON(request, response, '404', errorResponse);
-  }
-  else if (!characters[userCharacterKey]) {
+  } else if (!serverCharacters[userCharacterKey]) {
     respondJSON(request, response, '206', userTraits);
   } else {
-    respondJSON(request, response, '200', characters[userCharacterKey]);
+    respondJSON(request, response, '200', serverCharacters[userCharacterKey]);
   }
 };
 
@@ -87,7 +101,7 @@ const notFound = (request, response) => {
 // the parsedBody
 const matchCharacter = (request, response, body) => {
   // if the key is not found, we put the traits into an object to be sent back to results.html
-  if (!characters[body.results]) {
+  if (!serverCharacters[body.results]) {
     const traits = body.results.split(',');
     const newCharacter = {
       temper: traits[0],
@@ -101,28 +115,25 @@ const matchCharacter = (request, response, body) => {
       message: 'New character created',
     };
     respondJSON(request, response, '200', responseJSON);
-  }
-  // if they are found, we make the user's character equal to the one found in charcter[], and its
-  // key as well.
-  else if (characters[body.results]) {
+  } else if (serverCharacters[body.results]) {
     userCharacterKey = body.results;
-    userTraits = characters[body.results];
-    const responseJSON = {
-      message: 'Character found',
-    };
-    respondJSON(request, response, '200', responseJSON);
+    userTraits = serverCharacters[body.results];
+    respondJSONMeta(request, response, '204');
   }
 };
 
-
+// This function checks for duplicates when a user wants to create
+// A new character.
 const checkForDuplicates = (name) => {
-  for (const character in characters) {
-    if (characters[character].name === name) {
-      return true;
+  let ifDuplicate;
+  const serverCharacterValues = Object.values(serverCharacters);
+  serverCharacterValues.forEach((character) => {
+    if (serverCharacters[character].name === name) {
+      ifDuplicate = true;
     }
-  }
-  return false;
-}
+  });
+  return ifDuplicate;
+};
 
 // This is the post method that will add a new character to the character list. We create a
 // new object with all the user's parameters, and send it back with a 201 status code.
@@ -133,23 +144,21 @@ const addNewCharacter = (request, response, body) => {
 
   const duplicates = checkForDuplicates(body.name);
   if (!duplicates) {
-    characters[userCharacterKey] = {
+    serverCharacters[userCharacterKey] = {
       name: body.name,
       temper: body.temper,
       morality: body.morality,
       intelligence: body.intelligence,
       emotional: body.emotional,
+      custom: 'custom',
     };
-    responseJSON.message = "Successfully Posted!";
-  }
-  else {
-    responseJSON.message = "Name already in database, please enter a different name.";
+    responseJSON.message = 'Successfully Posted!';
+  } else {
+    responseJSON.message = 'Name already in database, please enter a different name.';
     status = 400;
-
   }
   respondJSON(request, response, status, responseJSON);
 };
-
 
 // public exports
 module.exports = {

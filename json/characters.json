@@ -29,7 +29,7 @@
             "emotional": "high"
         },
         "Mandolorian": {
-            "Name": "The Mandolorian",
+            "Name": "Mandolorian",
             "temper": "low",
             "morality": "high",
             "intelligence": "medium",
@@ -57,7 +57,7 @@
             "emotional": "low"
         },
         "MichaelDeSanta": {
-            "Name": "Michael De Santa",
+            "Name": "Michael DeSanta",
             "temper": "low",
             "morality": "medium",
             "intelligence": "medium",
@@ -107,8 +107,8 @@
         },
         "LamarDavis": {
             "Name": "Lamar Davis",
-            "temper": "medium",
-            "morality": "high",
+            "temper": "high",
+            "morality": "low",
             "intelligence": "medium",
             "emotional": "medium"
         },
@@ -117,7 +117,7 @@
             "temper": "high",
             "morality": "medium",
             "intelligence": "medium",
-            "emotional": "high"
+            "emotional": "low"
         },
         "TravisBickle": {
             "Name": "Travis Bickle",

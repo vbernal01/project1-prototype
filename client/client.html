@@ -4,9 +4,15 @@
 <head>
   <title>Our simple HTTP server</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
-
   <script>
 
+    const generateCol = (rowCount, rowElement) => {
+      for (let i = 1; i < 6; i += 1) {
+        let col = `
+          <div id = "row${rowCount}col${i}" class = "col tile"></div>`;
+        rowElement.innerHTML += col;
+      };
+    }
     //Handles our FETCH response. This function is async because it
     //contains an await.
     const handleResponse = async (response) => {
@@ -18,12 +24,13 @@
           `<p>${resultsJSON.message}</p>
             <button><a href = "/">Go back to Homepage</a></button>
           `;
-          return;
+        return;
       }
       //This functionality generates the different rows and columns that will display all the different characters.
       //I have to check up on the bulma functionality since it doesn't work to the way i want it to
       let rowCount = 1;
       let colCount = 1;
+
       for (const key in characters) {
         const characterStats = characters[key];
 
@@ -31,44 +38,67 @@
           content.innerHTML += `
           <div id = "row${rowCount}" class = "row tile"></div>          
           `
+          let newRowDiv = document.createElement("div");
+          newRowDiv.setAttribute("id", `row${rowCount}`);
+          newRowDiv.setAttribute("class", "row tile");
+          generateCol(rowCount, newRowDiv);
+          content.appendChild(newRowDiv);
         }
 
-        let currentRow = document.querySelector(`#row${rowCount}`);
+        let currentCol = document.querySelector(`#row${rowCount}col${colCount}`);
         let nameWithoutSpaces = characterStats.name.split(" ").join("");
-
         let characterDOM = document.createElement("div");
-        characterDOM.setAttribute("class", "tile character");
+        characterDOM.setAttribute("class", "tile is-vertical character");
         characterDOM.setAttribute("id", nameWithoutSpaces);
-        characterDOM.innerHTML += `
-        <p>${characterStats.name}</p>
-        `;
-        let expandStatButton = document.createElement("button");
 
+        //In order to get the images for each character, I parsed the name of each character object into what I named
+        //each image file in /charImg
+        let parsedImgSrc = characterStats.name.toLowerCase().replace(" ", "-");
+
+        let expandStatButton = document.createElement("button");
         //There will also be an expand stats button that will show the user all the stats of the character selected
-        expandStatButton.textContent = "Click to see stats";
-        expandStatButton.onclick = () => {
-          characterDOM.innerHTML += `
-            <div class = "stats">
-            <p class = "statText">Temper: ${characterStats.temper}</p>
-            <p class = "statText">Morality: ${characterStats.morality}</p>
-            <p class = "statText">Intelligence: ${characterStats.intelligence}</p>
-            <p class = "statText">Emotional: ${characterStats.emotional}</p>
+        expandStatButton.textContent = "Show Stats";
+        const showStats = () => {
+
+          let showDom = document.querySelector("#showCharacter");
+          showDom.setAttribute("class", "tile");
+          showDom.innerHTML = `
+            <div id = "stats" class = "tile">
+              <img src = "./charimgs/${parsedImgSrc}.png" alt = "${characterStats.name}">
+              <div id = "statWrapper">
+              <p class = "statText"><strong>Name:</strong> ${characterStats.name}</p>
+              <p class = "statText"><strong>Temper:</strong> ${characterStats.temper}</p>
+              <p class = "statText"><strong>Morality:</strong> ${characterStats.morality}</p>
+              <p class = "statText"><strong>Intelligence:</strong> ${characterStats.intelligence}</p>
+              <p class = "statText"><strong>Emotional:</strong> ${characterStats.emotional}</p>
+              </div>
             </div>
             `;
-        };
+        }
+        expandStatButton.addEventListener('click', showStats);
 
+        if (!characterStats.custom) {
+          characterDOM.innerHTML += `
+          <img class = "char img" src = "./charimgs/${parsedImgSrc}.png" alt = "${characterStats.name}">
+        `;
+        }
+        else {
+          characterDOM.innerHTML += `
+        <p class = "custom char">${characterStats.name}</p>
+        `;
+        }
         characterDOM.appendChild(expandStatButton);
-        currentRow.appendChild(characterDOM);
+        currentCol.appendChild(characterDOM);
 
+        currentCol.style.opacity = "30%";
         colCount++;
         if (colCount > 5) {
-          colCount = 0;
+          colCount = 1;
           rowCount++;
         }
       };
 
-
-      //This is the local storage functionallity. Needs to be polished.
+      
       if (localStorage.getItem("personalityMatches")) {
         let personalityString = localStorage.getItem("personalityMatches");
         let personalityArray = JSON.parse(personalityString);
@@ -76,12 +106,14 @@
           let convertedId = character.split(" ").join("");
           if (document.querySelector(`#${convertedId}`)) {
             let characterDOM = document.querySelector(`#${convertedId}`);
-            characterDOM.style.opacity = "100%";
-            characterDOM.style.color = "green";
+            characterDOM.parentElement.style.opacity = "100%";
+            characterDOM.lastChild.textContent = "UNLOCKED";
           }
         }
       }
     }
+
+
     const sendFetch = async (url, acceptedType) => {
       const options = {
         method: 'GET',
@@ -92,9 +124,16 @@
       handleResponse(response);
     };
 
-
     //Init function is called when window.onload runs (set below).
-    const init = () => { sendFetch("/getCharacters", "application/json"); };
+    const init = () => {
+
+      let rows = document.querySelectorAll(".row");
+
+      for (let i = 0; i < rows.length; i += 1) {
+        generateCol(i + 1, rows[i]);
+      }
+      sendFetch("/getCharacters", "application/json");
+    };
     //When the window loads, run init.
     window.onload = init;
   </script>
@@ -104,14 +143,21 @@
   <section id="top">
     <h1>Welcome the Character Personality Quiz!</h1>
     <h3>Which character is literally you?</h3>
-  </section>
-  <section id="content" class="row tile">
     <button id="moveToQuiz"><a href="quiz.html">Start the quiz!</a></button>
-    <div id="row1" class="row tile"></div>
-    <div id="row2" class="row tile"></div>
-    <div id="row3" class="row tile"></div>
-    <div id="row4" class="row tile"></div>
   </section>
+  <div id="contentWrapper" class="tile">
+    <section id="content" class="tile is-vertical">
+      <div id="row1" class="row tile"></div>
+      <div id="row2" class="row tile"></div>
+      <div id="row3" class="row tile"></div>
+      <div id="row4" class="row tile"></div>
+    </section>
+    <section id="showCharacter" class="tile is-vertical">
+      <p>Click on a character to see their stats!</p>
+      <br>
+      <p>Try to find all their character traits!</p>
+    </section>
+  </div>
 </body>
 
 </html>

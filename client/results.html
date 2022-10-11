@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/other-style.css">
     <title>Results</title>
 
     <script>
@@ -29,9 +30,12 @@
                 //if the status code is 200, we display on the client-side the matching result and the stats behind it.
                 //With all the cases, the user has the option to play again and try to get more characters
                 case 200:
-                    content.innerHTML += `
-                <h1>Your results are...</h1>
-                <h2>${resultsJSON.name}</h2>
+
+                let parsedImgSrc = resultsJSON.name.toLowerCase().replace(" ", "-");
+                content.innerHTML += `
+                <h1 class = "is-size-1"><strong>Your results are...</h1>
+                <img src = "./charimgs/${parsedImgSrc}.png" alt = "${resultsJSON.name}">
+                <h1 class = "is-size-1"><strong>${resultsJSON.name}</strong></h1>
                 <br>
                 <p>Your selected traits were:</p>
                 <h3>Temper: ${resultsJSON.temper}</h3>
@@ -57,8 +61,8 @@
                 //to the user to make their own character that other people can match with.
                 case 206:
                     content.innerHTML += `
-                <h1>You results are...</h1>
-                <h2>You're personality is unique!</h2>
+                <h1 class = "is-size-1">You results are...</h1>
+                <h1 class = "is-size-1">You're personality is unique!</h1>
                 <br>
                 <p>Our database wasn't able to match you with a character, but you can enter youself 
                 so people can match with your unique traits!</p>
