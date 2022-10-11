@@ -35,9 +35,6 @@
         const characterStats = characters[key];
 
         if (!document.querySelector(`#row${rowCount}`)) {
-          content.innerHTML += `
-          <div id = "row${rowCount}" class = "row tile"></div>          
-          `
           let newRowDiv = document.createElement("div");
           newRowDiv.setAttribute("id", `row${rowCount}`);
           newRowDiv.setAttribute("class", "row tile");
@@ -59,10 +56,11 @@
         //There will also be an expand stats button that will show the user all the stats of the character selected
         expandStatButton.textContent = "Show Stats";
         const showStats = () => {
-
           let showDom = document.querySelector("#showCharacter");
           showDom.setAttribute("class", "tile");
-          showDom.innerHTML = `
+          console.log(characterStats);
+          if (!characterStats.custom) {
+            showDom.innerHTML = `
             <div id = "stats" class = "tile">
               <img src = "./charimgs/${parsedImgSrc}.png" alt = "${characterStats.name}">
               <div id = "statWrapper">
@@ -74,6 +72,21 @@
               </div>
             </div>
             `;
+          }
+          else{
+            showDom.innerHTML = `
+            <div id = "stats" class = "tile">
+              <div id = "statWrapper">
+              <p class = "statText"><strong>Name:</strong> ${characterStats.name}</p>
+              <p class = "statText"><strong>Temper:</strong> ${characterStats.temper}</p>
+              <p class = "statText"><strong>Morality:</strong> ${characterStats.morality}</p>
+              <p class = "statText"><strong>Intelligence:</strong> ${characterStats.intelligence}</p>
+              <p class = "statText"><strong>Emotional:</strong> ${characterStats.emotional}</p>
+              </div>
+            </div>
+            `;
+          }
+
         }
         expandStatButton.addEventListener('click', showStats);
 
@@ -98,7 +111,7 @@
         }
       };
 
-      
+
       if (localStorage.getItem("personalityMatches")) {
         let personalityString = localStorage.getItem("personalityMatches");
         let personalityArray = JSON.parse(personalityString);

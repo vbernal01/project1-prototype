@@ -128,7 +128,7 @@ const checkForDuplicates = (name) => {
   let ifDuplicate;
   const serverCharacterValues = Object.values(serverCharacters);
   serverCharacterValues.forEach((character) => {
-    if (serverCharacters[character].name === name) {
+    if (character.name === name) {
       ifDuplicate = true;
     }
   });
