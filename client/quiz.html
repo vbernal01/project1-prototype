@@ -21,6 +21,8 @@
             },
             body: paramUserData,
         });
+
+        window.location.replace("results.html")
     };
 
 
@@ -118,7 +120,7 @@
 
 
         radioForm.innerHTML += `
-        <button id = "submit"><a href = "results.html">Submit Answers</a></button>
+        <button id = "submit">>Submit Answers</button>
         `;
 
         document.querySelector("#submit").addEventListener('click', submit);

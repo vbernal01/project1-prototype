@@ -37,16 +37,12 @@ html, body {
   width: 100%;
 }
 
-#showCharacter{
-border: 1px solid black;
-}
-
 #stats{
   text-align: center;
 }
 #stats img{
   width: 50%;
-  height:100%;
+  height:70%;
 }
 
 #statWrapper{
